@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
 <title>Rubik's Cube Solver</title>
 <style>
   :root { --S: 72px; }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: system-ui, Segoe UI, Roboto, sans-serif; background: radial-gradient(circle at 50% 30%, #2b3a55, #121826); color:#eef2f7; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { margin:0; font-family: system-ui, Segoe UI, Roboto, sans-serif; background: radial-gradient(circle at 50% 30%, #2b3a55, #121826); color:#eef2f7; min-height:100vh; min-height:100dvh; touch-action:manipulation; -webkit-touch-callout:none; padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); display:flex; flex-direction:column; align-items:center; }
   h1 { margin:14px 0 4px; font-size:1.5rem; }
-  #stage { width:min(100vw, 560px); height:400px; perspective:1000px; display:flex; align-items:center; justify-content:center; user-select:none; }
-  #scene { width:0; height:0; position:relative; transform-style:preserve-3d; }
-  .cubie { position:absolute; left:0; top:0; width:0; height:0; transform-style:preserve-3d; transform-origin:0 0 0; }
-  .face { position:absolute; left:calc(var(--S) / -2); top:calc(var(--S) / -2); width:var(--S); height:var(--S); backface-visibility:hidden; pointer-events:none; transform-origin:50% 50% 0; }
+  #stage { width:min(100%, 560px); height:400px; display:flex; align-items:center; justify-content:center; -webkit-user-select:none; user-select:none; }
+  #scene { width:0; height:0; position:relative; -webkit-transform-style:preserve-3d; transform-style:preserve-3d; }
+  .cubie { position:absolute; left:0; top:0; width:0; height:0; -webkit-transform-style:preserve-3d; transform-style:preserve-3d; transform-origin:0 0 0; }
+  .face { position:absolute; left:calc(var(--S) / -2); top:calc(var(--S) / -2); width:var(--S); height:var(--S); -webkit-backface-visibility:hidden; backface-visibility:hidden; pointer-events:none; transform-origin:50% 50% 0; }
   .body { background:#0b0b0b; }
   .sticker { border-radius:10px; border:calc(var(--S) * .07) solid #0b0b0b; background-clip:padding-box; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.4rem; color:#00000066; }
   .sticker.active { pointer-events:auto; cursor:pointer; animation:pulse 1.4s ease-in-out infinite; }
@@ -23,10 +25,10 @@
   #msg { min-height:2.6em; color:#b9c4d6; margin:4px 0 10px; }
   #msg.err { color:#ff8a80; }
   #palette { display:flex; gap:10px; justify-content:center; margin-bottom:12px; flex-wrap:wrap; }
-  .sw { width:52px; height:52px; border-radius:10px; border:3px solid #0008; cursor:pointer; font-weight:700; color:#000a; font-size:.8rem; }
+  .sw { -webkit-appearance:none; appearance:none; padding:0; width:52px; height:52px; border-radius:10px; border:3px solid #0008; cursor:pointer; font-weight:700; color:#000a; font-size:.8rem; }
   .sw.sel { outline:4px solid #fff; }
   .btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  button.act { font-size:1rem; padding:10px 20px; border-radius:10px; border:0; background:#3d4f73; color:#fff; cursor:pointer; }
+  button.act { min-height:44px; -webkit-appearance:none; appearance:none; font-size:1rem; padding:10px 20px; border-radius:10px; border:0; background:#3d4f73; color:#fff; cursor:pointer; }
   button.act:disabled { opacity:.35; cursor:not-allowed; }
   button.act:not(:disabled):hover { background:#51679a; }
   #solve:not(:disabled) { background:#18b84a; font-weight:700; animation:glow 1.2s ease-in-out infinite; }
@@ -341,7 +343,7 @@ if (typeof document !== 'undefined') (function () {
       els[i].style.transform = cssMat(rot, pos);
     });
   }
-  function setView() { scene.style.transform = 'rotateX(' + view.rx + 'deg) rotateY(' + view.ry + 'deg)'; }
+  function setView() { scene.style.transform = 'perspective(1000px) rotateX(' + view.rx + 'deg) rotateY(' + view.ry + 'deg)'; }
   function viewFor(f) {
     switch (f) {
       case 'F': return {rx:-18, ry:-22};
